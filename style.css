@@ -1,0 +1,88 @@
+body{
+    overflow-x: hidden;
+    background-color:thistle;
+}
+
+#navbar{
+    background-color: #3E065F;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+}
+
+.nav-item{
+}
+
+.container{
+    color: #fff;
+    text-align: center;
+    line-height: 2;
+}
+
+.code-avatar{
+     font-size: 4rem;
+     margin: 2rem;
+     margin-bottom: 2rem;
+}
+
+.heading-txt{
+    font-weight: 400;
+}
+
+
+.desc{
+    padding: 2rem;
+    padding-bottom: 0;
+    padding-top: 1rem;
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 400;
+    line-height: 2;
+    font-size: 1rem;
+}
+
+.btn{
+    margin-bottom: 2.5rem;
+    color: #fff;
+    background-color: #000000a6;
+    text-decoration: none;
+    text-transform: none;
+    border: solid;
+    border-color: #3E065F;
+    font-size: 1rem;
+}
+
+.btn:hover{
+    color: #fff;
+    background-color: #000000;
+}
+
+#code-desc{
+    text-align: center;
+    background-color:thistle;
+    padding-bottom: 2rem;
+}
+
+.code-desc-txt{
+    margin-top: 50px;
+}
+
+.img-code{
+    margin-top: 20px;   
+    width: 25rem;
+    border-radius: 10px 100px / 120px;
+    border: .5px solid gainsboro;
+}
+
+
+.desc-heading{
+    margin-top: 20px;
+    font-family: 'Poppins', sans-serif;
+    
+}
+
+.desc-para{
+    margin-top: 30px;
+    line-height: 1.5;
+    font-family: 'Josefin Sans', sans-serif;
+    padding: 0rem 2rem;
+    font-weight: 500;
+}

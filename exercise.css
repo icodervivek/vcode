@@ -42,8 +42,12 @@ body{
     font-size: .8rem;
 }
 
-.box{
-    font-size: .5rem;
+.c{
+    font-size: 6px;
+}
+
+.solutions h5{
+    font-size: .8rem !important;
 }
 
 }
@@ -51,7 +55,6 @@ body{
 .solutions h5{
     font-size: 1.2rem;
     text-align: left;
-    margin-top: 2rem;
 }
 
 .box{

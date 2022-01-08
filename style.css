@@ -86,3 +86,15 @@ body{
     padding: 0rem 2rem;
     font-weight: 500;
 }
+
+.exer-link{
+    color: #fefefe;
+    text-decoration: none;
+}
+
+
+.exer-link:hover{
+    color: #fefefe;
+    text-decoration: none;
+}
+

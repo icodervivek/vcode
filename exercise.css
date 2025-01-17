@@ -64,3 +64,19 @@ body{
 .box{
     font-size: 1rem;
 }
+
+.think-svg{
+    width: 80%;
+}
+
+.jdbc-hero-container{
+    background-color: #f7ede2;
+    border-radius: 50px;
+}
+
+@media (max-width: 991px){
+    
+.jdbc-hero-container .img{
+    margin-top: 2rem;
+}
+}

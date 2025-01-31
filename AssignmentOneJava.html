@@ -103,6 +103,11 @@
         <a href="#twentyfifth">25. Write a program to demonstrate interfaces.</a>
         <a href="#twentysixth">26. Write a program to demonstrate packages.</a>
         <a href="#twentyseventh">27. Write a program to demonstrate multithreading.</a>
+        <a href="#twentyeight">28. Write a program to demonstrate JDBC Connectivity.</a>
+        <a href="#twentyninth">29. Design a login page using JSP and Servlet.</a>
+        <a href="#thirty">30. Design a page using Servlet and JSP to retrieve and display any 5 user ID and password at the server page which is used in database.</a>
+        <a href="#thirtyone">31. Write a program to demonstrate cookies and generate log file using JSP and Servlet.</a>
+
       </div>
     </section>
 
@@ -860,6 +865,366 @@ class MyThread extends Thread {
             </pre>
         </div>
         
+
+        <h5 id="twentyeight">28. Write a program to demonstrate JDBC Connectivity.</h5>
+      <div class="container">
+        <pre class="box">
+          <code class="java">import java.sql.*;
+
+  public class OracleJDBCExample {
+            
+      public static void main(String[] args) {
+            try {
+                // Load the Oracle Type 2 driver (OCI driver)
+                // The Oracle OCI driver uses the Oracle Client libraries to connect to the Oracle DB
+                Class.forName("oracle.jdbc.OracleDriver");
+                System.out.println("Driver Loaded Successfully!");
+            
+                // Establish a connection using Type 2 driver (OCI)
+                // You must have the Oracle client (OCI) installed and configured
+                Connection conn = DriverManager.getConnection(
+                "jdbc:oracle:oci8:@localhost:1521:orcl", // JDBC URL for OCI driver
+                "username",  // Replace with your Oracle username
+                "password"   // Replace with your Oracle password
+                );
+                System.out.println("Connection Established Successfully!");
+            
+                // Create a statement
+                Statement stmt = conn.createStatement();
+            
+                // Execute a query
+                String query = "SELECT id, Name FROM students"; // SQL query to retrieve student data
+                ResultSet rs = stmt.executeQuery(query);
+            
+                // Process the result set
+                while (rs.next()) {
+                    System.out.println("ID = " + rs.getInt("id") + ", Name = " + rs.getString("Name"));
+                }
+            
+                // Close resources
+                rs.close();
+                stmt.close();
+                conn.close();
+                    System.out.println("Connection Closed Successfully!");
+                } catch (Exception e) {
+                    System.out.println("Something went wrong: " + e.getMessage());
+                }
+          }
+    }
+            
+            </code>
+            </pre>
+        </div>
+
+
+        <h5 id="twentyninth" style="margin-bottom: 2rem;">29. Design a login page using JSP and Servlet.</h5>
+        <p style="background-color: white;" class="rounded p-2">Part 1: JSP (Login Page) <b>login.jsp</b></p>
+        <div class="container">
+<pre class="box">
+<code class="java"><%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+  <%@ page import="java.io.*, javax.servlet.*, javax.servlet.http.*" %>
+  &lt;html&gt;
+  &lt;head&gt;
+      &lt;title&gt;Login Page&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+      &lt;h2&gt;Login Form&lt;/h2&gt;
+      &lt;form action="LoginServlet" method="post"&gt;
+          &lt;label for="username"&gt;Username:&lt;/label&gt;&lt;br&gt;
+          &lt;input type="text" id="username" name="username" required&gt;&lt;br&gt;&lt;br&gt;
+  
+          &lt;label for="password"&gt;Password:&lt;/label&gt;&lt;br&gt;
+          &lt;input type="password" id="password" name="password" required&gt;&lt;br&gt;&lt;br&gt;
+  
+          &lt;button type="submit"&gt;Login&lt;/button&gt;
+      &lt;/form&gt;
+  &lt;/body&gt;
+  &lt;/html&gt;
+  
+</code>
+            </pre>
+</div>
+<p style="background-color: white;margin-top:-3rem;" class="rounded p-2 mt-1">Part 2: Servlet (Backend Logic) <b>LoginServlet.java</b></p>
+<div class="container">
+  <pre class="box">
+            <code class="java">import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class LoginServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Set response content type
+        response.setContentType("text/html");
+
+        // Get the user input from the login form
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        // Logic to validate the credentials (For simplicity, using hardcoded values)
+        PrintWriter out = response.getWriter();
+        if ("admin".equals(username) && "password123".equals(password)) {
+            // If valid, redirect to a welcome page
+            out.println("<h3>Welcome, " + username + "!</h3>");
+            out.println("<p>You have logged in successfully.</p>");
+        } else {
+            // If invalid, send an error message
+            out.println("<h3>Invalid login credentials.</h3>");
+            out.println("<p><a href='login.jsp'>Try again</a></p>");
+        }
+    }
+}           
+      </code>
+            
+              </pre>
+</div>
+
+
+<h5 id="thirty">30. Design a page using Servlet and JSP to retrieve and display any 5 user ID and password at the server page which is used in database.</h5>
+<p style="background-color: white; margin-top: 2rem;" class="rounded p-2">Using Servlet</p>
+<div class="container">
+  <pre class="box">
+    <code class="java">import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.sql.*;
+      
+  public class UserServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    throws ServletException, IOException {
+      response.setContentType("text/html");
+      PrintWriter out = response.getWriter();
+      
+      try {
+            // Connect to the database
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", 
+            "root", "password");
+      
+            // Fetch the first 5 users
+            String query = "SELECT id, username, password FROM users LIMIT 5";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+      
+            // Start HTML output
+            out.println("&lt;html&gt;&lt;body&gt;");
+            out.println("&lt;h2&gt;User Details&lt;/h2&gt;");
+            out.println("&lt;table border='1'&gt;&lt;tr&gt;&lt;th&gt;ID&lt;/th&gt;&lt;th&gt;Username&lt;/th&gt;&lt;th&gt;Password&lt;/th&gt;&lt;/tr&gt;");
+
+      
+            // Loop through the result set and display data in a table
+            while (rs.next()) {
+              out.println("&lt;tr&gt;");
+                out.println("&lt;td&gt;" + rs.getInt("id") + "&lt;/td&gt;");
+                out.println("&lt;td&gt;" + rs.getString("username") + "&lt;/td&gt;");
+                out.println("&lt;td&gt;" + rs.getString("password") + "&lt;/td&gt;");
+                out.println("&lt;/tr&gt;");
+          }
+          out.println("&lt;/table&gt;");
+          out.println("&lt;/body&gt;&lt;/html&gt;");
+      
+            // Close resources
+            rs.close();
+            stmt.close();
+            conn.close();
+          } catch (Exception e) {
+              out.println("Error: " + e.getMessage());
+          }
+        }
+    }
+      
+      </code>
+      </pre>
+  </div>
+
+  <p style="background-color: white;" class="rounded p-2">Using JSP</p>
+<div class="container">
+  <pre class="box">
+    <code class="java"><%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.sql.*, java.util.*" %>
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;User Details&lt;/title&gt;
+    &lt;style&gt;
+        table {
+            width: 50%;
+            margin: 50px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h2 style="text-align: center;"&gt;User Details&lt;/h2&gt;
+    &lt;table&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt;ID&lt;/th&gt;
+            &lt;th&gt;Username&lt;/th&gt;
+            &lt;th&gt;Password&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+            &lt;%
+            // Establish the database connection using the utility class
+            Connection conn = null;
+            Statement stmt = null;
+            ResultSet rs = null;
+            
+            try {
+                conn = DBConnection.getConnection(); // Use the DBConnection class
+                stmt = conn.createStatement();
+                
+                // Query to fetch first 5 users from the database
+                String query = "SELECT id, username, password FROM users LIMIT 5";
+                rs = stmt.executeQuery(query);
+                
+                // Loop through the result set and display user data in the table
+                while (rs.next()) {
+                  out.println("&lt;tr&gt;");
+                  out.println("&lt;td&gt;" + rs.getInt("id") + "&lt;/td&gt;");
+                  out.println("&lt;td&gt;" + rs.getString("username") + "&lt;/td&gt;");
+                  out.println("&lt;td&gt;" + rs.getString("password") + "&lt;/td&gt;");
+                  out.println("&lt;/tr&gt;");
+                }
+            } catch (SQLException e) {
+                out.println("&lt;tr&gt;&lt;td colspan='3'&gt;Error: " + e.getMessage() + "&lt;/td&gt;&lt;/tr&gt;");
+            } finally {
+                // Close the database resources
+                try {
+                  if (rs != null) rs.close();
+                  if (stmt != null) stmt.close();
+                  if (conn != null) conn.close();
+                } catch (SQLException e) {
+                  out.println("&lt;tr&gt;&lt;td colspan='3'&gt;Error closing resources: " + 
+                  e.getMessage() + "&lt;/td&gt;&lt;/tr&gt;");
+                }
+            }
+            %>
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+      
+      </code>
+      </pre>
+  </div>
+
+
+  <h5 id="thirtyone">31. Write a program to demonstrate cookies and generate log file using JSP and Servlet.</h5>
+  <p style="background-color: white; margin-top: 2rem;" class="rounded p-2">Servlet: CookieServlet.java
+  </p>
+      <div class="container">
+        <pre class="box">
+          <code class="java">import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.util.*;
+import java.text.*;
+
+public class CookieServlet extends HttpServlet {
+    
+    private static final String LOG_FILE_PATH = "C:/logs/application.log"; 
+    // Change this path based on your system
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        
+        // Create a new cookie
+        String userId = UUID.randomUUID().toString(); // Generate a unique user ID
+        Cookie userCookie = new Cookie("userID", userId);
+        userCookie.setMaxAge(60 * 60); // Set cookie expiration to 1 hour
+        response.addCookie(userCookie);
+
+        // Log the request information
+        logRequestToFile(request);
+
+        out.println("&lt;html&gt;");
+        out.println("&lt;body&gt;");
+        out.println("&lt;h2>Cookie Created Successfully!&lt;/h2&gt;");
+        out.println("&lt;p>Your unique user ID (Cookie): " + userId + "&lt;/p&gt;");
+        out.println("&lt;p>&lt;a href='log.jsp'>Click here to view the log file&lt;/a&gt;&lt;/p&gt;");
+        out.println("&lt;/body&gt;");
+        out.println("&lt;/html&gt;");
+    }
+
+    // Method to log request information into a log file
+    private void logRequestToFile(HttpServletRequest request) {
+        try {
+          PrintWriter logWriter = new PrintWriter(new FileWriter(LOG_FILE_PATH, true)); // Append mode
+          String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+          String logMessage = timestamp + " - Access from IP: " + request.getRemoteAddr() 
+          + " with User-Agent: " + request.getHeader("User-Agent");
+          logWriter.println(logMessage);
+          logWriter.close();
+        } catch (IOException e) {
+          System.out.println("Error logging request: " + e.getMessage());
+        }
+    }
+}
+          </code>
+        </pre>
+      </div>
+  
+      <p style="background-color: white; margin-top: 2rem;" class="rounded p-2">JSP: log.jsp
+      </p>
+          <div class="container">
+            <pre class="box">
+              <code class="java"><%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.io.*, java.util.*" %>
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Log File and Cookie Information&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h2&gt;Cookie Information&lt;/h2&gt;
+    &lt;p&gt;
+        &lt;%
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("userID".equals(cookie.getName())) {
+                        out.println("Your User ID (Cookie): " + cookie.getValue());
+                    }
+                }
+            } else {
+                out.println("No cookies found.");
+            }
+        %&gt;
+    &lt;/p&gt;
+
+    &lt;h2&gt;Log File Contents&lt;/h2&gt;
+    &lt;pre&gt;
+        &lt;%
+            String logFilePath = &quot;C:/logs/application.log&quot;; 
+            // Make sure the path is correct for your environment
+            File logFile = new File(logFilePath);
+            if (logFile.exists()) {
+                BufferedReader reader = new BufferedReader(new FileReader(logFile));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    out.println(line);
+                }
+                reader.close();
+            } else {
+                out.println("Log file does not exist.");
+            }
+        %&gt;
+    &lt;/pre&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+              </code>
+            </pre>
+          </div>
+          
 
     </section>
 
